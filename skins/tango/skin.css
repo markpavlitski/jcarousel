@@ -1,47 +1,41 @@
-/**
- * Based on the default jCarousel Tango skin. Adapted for use with the
- * panels_mini module in specific and Drupal in general by Wim Leers.
- */
-
 .jcarousel-skin-tango.jcarousel-container {
-    -moz-border-radius: 20px;
+    -moz-border-radius: 10px;
     background: #F0F6F9;
     border: 1px solid #346F97;
 }
 
 .jcarousel-skin-tango.jcarousel-container-horizontal {
-    width: 16em;
-    padding: 40px 0;
-	padding-bottom: 0;
+    width: 245px;
+    padding: 20px 40px;
 }
 
 .jcarousel-skin-tango.jcarousel-container-vertical {
-    width: 16em;
-    height: 100%;
-    padding: 40px 0;
+    width: 75px;
+    height: 245px;
+    padding: 40px 20px;
 }
 
 .jcarousel-skin-tango .jcarousel-clip-horizontal {
-    width:  16em;
-    height: 100%;
+    width:  245px;
+    height: 75px;
 }
 
 .jcarousel-skin-tango .jcarousel-clip-vertical {
-    width:  16em;
-    height: 18em;
+    width:  75px;
+    height: 245px;
 }
 
 .jcarousel-skin-tango .jcarousel-item {
-	width: 100%;
-	height: 100%;
-	padding: 0;
+    width: 75px;
+    height: 75px;
 }
 
 .jcarousel-skin-tango .jcarousel-item-horizontal {
+    margin-right: 10px;
 }
 
 .jcarousel-skin-tango .jcarousel-item-vertical {
-	margin: 0;
+    margin-bottom: 10px;
 }
 
 .jcarousel-skin-tango .jcarousel-item-placeholder {
@@ -54,8 +48,8 @@
  */
 .jcarousel-skin-tango .jcarousel-next-horizontal {
     position: absolute;
-    top: 5px;
-    left: 37px;
+    top: 43px;
+    right: 5px;
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -79,7 +73,7 @@
 
 .jcarousel-skin-tango .jcarousel-prev-horizontal {
     position: absolute;
-    top: 5px;
+    top: 43px;
     left: 5px;
     width: 32px;
     height: 32px;
@@ -108,7 +102,7 @@
 .jcarousel-skin-tango .jcarousel-next-vertical {
     position: absolute;
     bottom: 5px;
-    left: 5px;
+    left: 43px;
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -133,7 +127,7 @@
 .jcarousel-skin-tango .jcarousel-prev-vertical {
     position: absolute;
     top: 5px;
-    left: 5px;
+    left: 43px;
     width: 32px;
     height: 32px;
     cursor: pointer;
