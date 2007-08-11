@@ -1,30 +1,51 @@
-This module allows you to make use of the jCarousel jQuery plugin (http://sorgalla.com/jcarousel/).
+$Id$
 
-It requires the jQuery Update module (http://drupal.org/project/jquery_update).
+Description
+-----------
+This module provides a central function for adding the jCarousel jQuery plugin
+and makes sure it's added only once per page.
+
+Additionally, it also provides a configurable "carousel" style for use by the
+Mini Panels module.
 
 
-INSTALLATION:
+Dependencies
+------------
+* jQuery Update (http://drupal.org/project/jquery_update)
 
+
+Installation
+------------
 1) Place this module directory in your modules folder (this will usually be
 "sites/all/modules/").
 
 2) Enable the module.
 
 
-USAGE:
+Developer notes
+---------------
+1) Make sure you have HTML in a format that jCarousel can handle it. See
+http://sorgalla.com/jcarousel/.
 
-0) Make sure you have HTML in a format that jCarousel can handle it. See http://sorgalla.com/jcarousel/.
+1) Add the required JS/CSS files by calling the jcarousel_add() function.
 
-1) Add the required JS/CSS files by calling this function:
-	jcarousel_add();
+2) Optionally, you can also specify one of the included skins, tango is the
+default: jcarousel_add('sweetie').
 
-2) Optionally, you can also specify one of the included skins, tango is the default:
-	jcarousel_add('sweetie');
-
-3) Or you can use no skin altogether (and define your own 
-	jcarousel_add(FALSE);
+3) Or you can use none of the included skins:	jcarousel_add(FALSE).
 
 
-NOTES:
+Sponsor
+-------
+Paul Ektov of http://autobin.ru.
 
-Only the tango skin is modified for usage with Drupal (specifically for usage as a block), the others have not yet been tested.
+
+Author
+------
+Wim Leers
+
+* mail: work@wimleers.com
+* website: http://wimleers.com/work
+
+The author can be contacted for paid customizations of this module as well as
+Drupal consulting, development and installation.
