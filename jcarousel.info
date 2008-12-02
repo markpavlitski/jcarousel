@@ -1,5 +1,4 @@
-; $Id: jcarousel.info,v 1.1.2.1 2007/08/05 14:55:16 wimleers Exp $
+; $Id$
 name = jCarousel
-description = This module allows developers and themers to make use of the jCarousel jQuery plugin.
-package = User Interface
-dependencies = jquery_update
+description = Provides the jQuery jCarousel plugin.
+core = 6.x
