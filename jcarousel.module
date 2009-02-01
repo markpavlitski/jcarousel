@@ -72,10 +72,24 @@ function jcarousel_help($path, $arg) {
 function jcarousel_add($selector = NULL, $options = array(), $skin = 'tango', $skin_path = NULL) {
   // Add jCarousel only if it hasn't been added yet.
   static $jcarousel_added = array();
+
+  // Retrieve the jCarousel module path for later use.
+  $jcarousel = drupal_get_path('module', 'jcarousel');
+
+  // Check if we have already added the jCarousel plugin.
   if (!isset($jcarousel_added['plugin'])) {
-    drupal_add_js(drupal_get_path('module', 'jcarousel') .'/jcarousel/lib/jquery.jcarousel.js');
-    drupal_add_css(drupal_get_path('module', 'jcarousel') .'/jcarousel/lib/jquery.jcarousel.css');
-    drupal_add_css(drupal_get_path('module', 'jcarousel') .'/jcarousel.css');
+    // Add either the compressed or uncompressed version of the jCarousel plugin
+    // based on if JavaScript optimization is enabled.
+    if (variable_get('preprocess_js', 0)) {
+      drupal_add_js($jcarousel .'/jcarousel/lib/jquery.jcarousel.pack.js');
+    }
+    else {
+      drupal_add_js($jcarousel .'/jcarousel/lib/jquery.jcarousel.js');
+    }
+
+    // Add the related jCarousel stylesheets.
+    drupal_add_css($jcarousel .'/jcarousel/lib/jquery.jcarousel.css');
+    drupal_add_css($jcarousel .'/jcarousel.css');
 
     // Register the jCarousel Drupal behaviour.
     drupal_add_js(drupal_get_path('module', 'jcarousel') .'/jcarousel.js');
@@ -95,9 +109,9 @@ function jcarousel_add($selector = NULL, $options = array(), $skin = 'tango', $s
     // Add the skin CSS if it hasn't been added yet.
     if (!isset($jcarousel_added['skin'][$skin])) {
       if ($skin == 'tango' || $skin == 'ie7') {
-        drupal_add_css(drupal_get_path('module', 'jcarousel') ."/jcarousel/skins/$skin/skin.css");
+        drupal_add_css("$jcarousel/jcarousel/skins/$skin/skin.css");
       } 
-      else {
+      elseif (!empty($skin_path)) {
         drupal_add_css($skin_path, 'theme');
       }
       $jcarousel_added['skin'][$skin] = TRUE;
