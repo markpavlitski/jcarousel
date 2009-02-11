@@ -9,9 +9,8 @@
  * The jCarousel Drupal behavior that creates the set of jCarousel elements from Drupal.settings.jcarousel.
  */
 Drupal.behaviors.jcarousel = function() {
-  for (selector in Drupal.settings.jcarousel) {
-    // Retrieve the options.
-    var options = Drupal.settings.jcarousel[selector];
+  // Iterate through each selector and add the carousel.
+  jQuery.each(Drupal.settings.jcarousel, function(selector, options) {
 
     // Convert any callback arguments from strings to function calls.
     var callbacks = ['initCallback', 'itemLoadCallback', 'itemFirstInCallback', 'itemFirstOutCallback', 'itemLastOutCallback', 'itemLastInCallback', 'itemVisibleInCallback', 'itemVisibleOutCallback', 'buttonNextCallback', 'buttonPrevCallback'];
@@ -44,5 +43,5 @@ Drupal.behaviors.jcarousel = function() {
 
     // Create the countdown element on non-processed elements.
     $(selector + ':not(.jcarousel-processed)').addClass('jcarousel-processed' + skin).jcarousel(options);
-  }
+  });
 }
