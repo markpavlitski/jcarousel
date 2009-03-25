@@ -102,7 +102,7 @@ function jcarousel_add($selector = NULL, $options = array(), $skin = 'tango', $s
     // Add either the compressed or uncompressed version of the jCarousel plugin
     // based on if JavaScript optimization is enabled.
     if (variable_get('preprocess_js', 0)) {
-      drupal_add_js($jcarousel .'/jcarousel/lib/jquery.jcarousel.pack.js');
+      drupal_add_js($jcarousel .'/jcarousel/lib/jquery.jcarousel.jsmin.js');
     }
     else {
       drupal_add_js($jcarousel .'/jcarousel/lib/jquery.jcarousel.js');
