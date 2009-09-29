@@ -130,7 +130,7 @@ function jcarousel_add($selector = NULL, $options = array(), $skin = 'tango', $s
     // Add the skin CSS if it hasn't been added yet.
     if (!isset($jcarousel_added['skin'][$skin])) {
       if ($skin == 'tango' || $skin == 'ie7') {
-        drupal_add_css("$jcarousel/jcarousel/skins/$skin/skin.css");
+        drupal_add_css("$jcarousel/jcarousel/skins/$skin/skin.css", 'theme');
       } 
       elseif (!empty($skin_path)) {
         drupal_add_css($skin_path, 'theme');
