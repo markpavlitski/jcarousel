@@ -59,7 +59,7 @@ Drupal.behaviors.jcarousel = function() {
     }
 
     // Create the countdown element on non-processed elements.
-    $(selector + ':not(.jcarousel-processed)').addClass('jcarousel-processed' + skin).jcarousel(options);
+    $(selector + ':not(.jcarousel-processed)').removeClass('js-hide').addClass('jcarousel-processed' + skin).jcarousel(options);
   });
 };
 

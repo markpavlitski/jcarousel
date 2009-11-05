@@ -187,7 +187,7 @@ function jcarousel_theme($existing, $type, $theme, $path) {
 function theme_jcarousel($items = array(), $options = array(), $skin = 'tango', $skin_path = NULL, $id = 'jcarousel') {
   $name = form_clean_id($id);
   jcarousel_add('#'. $name, $options, $skin, $skin_path);
-  $output = '<ul id="'. $name .'" class="jcarousel-skin-'. $skin .'">';
+  $output = '<ul id="'. $name .'" class="js-hide jcarousel-skin-'. $skin .'">';
   foreach ($items as $item) {
     $output .= '<li>'. $item .'</li>';
   }
