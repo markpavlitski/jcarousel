@@ -64,6 +64,12 @@ function jcarousel_help($path, $arg) {
       $output .= theme('jcarousel', $items, $options);
       $output .= '<p>'. t('The theme function allows you to easily create the markup, and add all the JavaScript to the page in one function call. In this example we create the carousel with the button next event being called when the mouse rolls over the buttons.') .'</p>';
 
+      // Provide a circular wrap element.
+      $output .= '<h3>'. t('Circular wrap') .'</h3>';
+      $options = array(
+        'wrap' => 'circular',
+      );
+      $output .= theme('jcarousel', $items, $options);
       return $output;
     break;
   }

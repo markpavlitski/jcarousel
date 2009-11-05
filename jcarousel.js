@@ -41,7 +41,33 @@ Drupal.behaviors.jcarousel = function() {
       skin = '';
     }
 
+    // Prepare callbacks for circular carousels
+    if (options['wrap'] == 'circular') {
+      var itemList = [];
+      // Add item to storage list, then remove it from the HTML so the carousel has no length
+      // The removing is necessary, otherwise the carousel will stop when it reaches the end
+      $(selector + ' li').each(function(){
+        itemList.push($(this).html());
+        this.parentNode.removeChild(this);
+      });
+
+      options['itemVisibleInCallback'] = { onBeforeAnimation: function(carousel, item, i, state, e) {
+        jcarousel_itemVisibleInCallback(carousel, item, i, state, e, itemList);
+      }};
+
+      options['itemVisibleOutCallback'] = { onAfterAnimation: jcarousel_itemVisibleOutCallback };
+    }
+
     // Create the countdown element on non-processed elements.
     $(selector + ':not(.jcarousel-processed)').addClass('jcarousel-processed' + skin).jcarousel(options);
   });
 };
+
+function jcarousel_itemVisibleInCallback(carousel, item, i, state, e, items) {
+  var idx = carousel.index(i, items.length);
+  carousel.add(i, items[idx - 1]);
+}
+
+function jcarousel_itemVisibleOutCallback(carousel, item, i, state, e) {
+  carousel.remove(i);
+}
