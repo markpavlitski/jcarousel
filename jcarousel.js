@@ -10,7 +10,7 @@
  */
 Drupal.behaviors.jcarousel = function() {
   // Iterate through each selector and add the carousel.
-  jQuery.each(Drupal.settings.jcarousel, function(selector, options) {
+  jQuery.each(Drupal.settings.jcarousel || {}, function(selector, options) {
 
     // Convert any callback arguments from strings to function calls.
     var callbacks = ['initCallback', 'itemLoadCallback', 'itemFirstInCallback', 'itemFirstOutCallback', 'itemLastOutCallback', 'itemLastInCallback', 'itemVisibleInCallback', 'itemVisibleOutCallback', 'buttonNextCallback', 'buttonPrevCallback'];
