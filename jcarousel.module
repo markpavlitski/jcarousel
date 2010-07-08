@@ -137,7 +137,7 @@ function jcarousel_add($selector = NULL, $options = array(), $skin = 'tango', $s
     if (!isset($jcarousel_added['skin'][$skin])) {
       if ($skin == 'tango' || $skin == 'ie7') {
         drupal_add_css("$jcarousel/jcarousel/skins/$skin/skin.css", 'theme');
-      } 
+      }
       elseif (!empty($skin_path)) {
         drupal_add_css($skin_path, 'theme');
       }
@@ -164,7 +164,7 @@ function jcarousel_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Creates a jCarousel element on the page. 
+ * Creates a jCarousel element on the page.
  * @param $items
  *   The items to appear in the carousel.
  * @param $options
