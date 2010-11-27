@@ -10,7 +10,7 @@
  * Implements hook_views_plugin().
  */
 function jcarousel_views_plugins() {
-  $plugins['style']['carousel'] = array(
+  $plugins['style']['jcarousel'] = array(
     'title' => t('jCarousel'),
     'help' => t('Display rows in a carousel via jCarousel.'),
     'handler' => 'jcarousel_style_plugin',

@@ -19,7 +19,7 @@ class jcarousel_style_plugin extends views_plugin_style {
     $options['visible'] = array('default' => NULL);
     $options['scroll'] = array('default' => '');
     $options['auto'] = array('default' => 0);
-    $options['animation'] = array('default' => 'fast');
+    $options['animation'] = array('default' => '');
     $options['start'] = array('default' => '1');
     $options['easing'] = array('default' => NULL);
     $options['vertical'] = array('default' => FALSE);
@@ -88,14 +88,6 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#field_suffix' => ' ' . t('seconds'),
       '#description' => t('Specifies how many seconds to periodically auto-scroll the content. If set to 0 (default) then autoscrolling is turned off.'),
     );
-    $form['animation'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Animation speed'),
-      '#size' => 10,
-      '#maxlength' => 10,
-      '#default_value' => $this->options['animation'],
-      '#description' => t('The speed of the scroll animation as string in jQuery terms ("slow"  or "fast") or milliseconds as integer (See <a href="http://api.jquery.com/animate/">jQuery Documentation</a>).'),
-    );
 
     $form['advanced'] = array(
       '#type' => 'fieldset',
@@ -104,12 +96,13 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#collapsed' => TRUE,
       '#parents' => array('style_options'),
     );
-    $form['advanced']['start'] = array(
-      '#type' => 'select',
-      '#title' => t('Start position'),
-      '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set.') . $ajax_warning,
-      '#options' => $range,
-      '#default_value' => $this->options['start'],
+    $form['advanced']['animation'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Animation speed'),
+      '#size' => 10,
+      '#maxlength' => 10,
+      '#default_value' => $this->options['animation'],
+      '#description' => t('The speed of the scroll animation as string in jQuery terms ("slow"  or "fast") or milliseconds as integer (See <a href="http://api.jquery.com/animate/">jQuery Documentation</a>).'),
     );
     $form['advanced']['easing'] = array(
       '#type' => 'textfield',
@@ -118,6 +111,13 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#maxlength' => 10,
       '#default_value' => $this->options['easing'],
       '#description' => t('The name of the easing effect that you want to use such as "swing" (the default) or "linear". See list of options in the <a href="http://api.jquery.com/animate/">jQuery Documentation</a>.'),
+    );
+    $form['advanced']['start'] = array(
+      '#type' => 'select',
+      '#title' => t('Start position'),
+      '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set.') . $ajax_warning,
+      '#options' => $range,
+      '#default_value' => $this->options['start'],
     );
     $form['advanced']['vertical'] = array(
       '#type' => 'checkbox',
