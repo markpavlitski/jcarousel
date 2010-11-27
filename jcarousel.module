@@ -79,7 +79,7 @@ function jcarousel_help($path, $arg) {
       // Provide the different skins carousel demonstration.
       $output .= '<h3>' . t('Different skins') . '</h3>';
       $list_html = '<ul class="differentskin jcarousel-skin-tango">' . $list . '</ul>';
-      $output .= '<p>' . t('The "skin" of a carousel can be changed by setting the <code>$options[\'skin\']</code> property. This skin must match one of the skins either provided by a module or matching a skin included in your theme\'s style.css file. Skins are simply a class given to the HTML list with the name "jcarousel-skin-[skin-name]".') . '</p>';
+      $output .= '<p>' . t('The "skin" of a carousel can be changed by setting the <code>$options[\'skin\']</code> property. This skin must match one of the skins either provided by a module or matching a skin included in your theme\'s style.css file. Skins are simply a class given to the HTML list with the name "jcarousel-skin-[skin-name]". A custom skin path may be specified in <code>$options[\'skin path\']</code>, or you can use one of these module-based skins:') . theme('item_list', array_keys(jcarousel_skins())) . t('Note that with skins you will often need to override certain CSS styles in your theme\'s style.css file. Certain properties (like the height and width of individual items and the carousel itself) must be manually specified directly in CSS. Not using a skin at all by specifying <code>$options[\'skin\'] = NULL</code> and then styling the entire carousel in style.css is also a good approach.') . '</p>';
 
       $sample = $fieldset;
       $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('differentskin', array('skin' => 'tango')); ?>", TRUE);
@@ -221,14 +221,14 @@ function jcarousel_add($class_name = NULL, $options = array(), $add = TRUE) {
       'skin' => 'default',
       'selector' => '.' . $class_name,
     );
-  
+
     // Allow other modules to modify these settings.
     drupal_alter('jcarousel_options', $options, $class_name);
-  
+
     // Add settings for this individual carousel.
     if (!isset($library_added[$class_name])) {
       $library_added[$class_name] = TRUE;
-  
+
       // Add the JavaScript settings for this carousel.
       $js_settings = array(
         'jcarousel' => array(
@@ -244,11 +244,19 @@ function jcarousel_add($class_name = NULL, $options = array(), $add = TRUE) {
     }
   }
 
+  // Add the skin for this carousel.
   if (!empty($options['skin'])) {
-    // Add the skin for this carousel.
-    $skins = jcarousel_skins();
-    $skin = isset($skins[$options['skin']]) ? $skins[$options['skin']] : $skins['default'];
-    $attachments['css'][] = $skin['file path'] . '/' . $skin['file'];
+    // A custom skin path is possible but generally discouraged because it's
+    // difficult to give it a human-readable name or reference the CSS file.
+    if (isset($options['skin path'])) {
+      $attachements['css'][] = $options['skin path'];
+    }
+    // The more common situation is to use a skin defined by another module
+    // in hook_jcarousel_skin_info().
+    elseif (($skins = jcarousel_skins()) && isset($skins[$options['skin']])) {
+      $skin = $skins[$options['skin']];
+      $attachments['css'][] = $skin['file path'] . '/' . $skin['file'];
+    }
   }
 
   // If adding directly to the page, loop through our attachments and add them.
