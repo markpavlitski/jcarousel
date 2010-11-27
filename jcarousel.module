@@ -12,37 +12,85 @@
 function jcarousel_help($path, $arg) {
   switch ($path) {
     case 'admin/help#jcarousel':
-      $output = '<p>' . t('The following is a demonstration of jCarousel module.') . '</p>';
+      $fieldset = array(
+        '#title' => t('View sample code'),
+        '#description' => t('The following HTML may be printed out to the page through a node, block, or in a custom template. Then the following PHP code must be run to add the jCarousel library and CSS to the page.'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+
+      $output = '';
+
+      $output .= '<p>' . t('The jCarousel module provides the ability to create carousel-style lists such as those included on this page. The jCarousel module includes integrations with other Drupal modules, but may also be used manually within your own theme or custom modules. It does not include any site-wide settings page or options, each carousel is separately configured.') . '</p>';
+
+      $output .= '<h2>' . t('Views integration') . '</h2>';
+      $output .= '<p>';
+      $output .= t('Most configuration options for the jCarousel module are provided through <a href="http://drupal.org/project/views">Views module</a>.');
+      if (module_exists('views_ui')) {
+        $output .= ' ' . t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change its "Display style" to "jCarousel" and configure the remaining options there. When using the jCarousel display style with Views, you can construct any of the examples on this page as well as dynamically loaded carousels through AJAX requests.');
+      }
+      else {
+        $output .= ' ' . t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url('admin/build/modules')));
+      }
+      $output .= '</p>';
+
+      $output .= '<h2>' . t('Custom implementations') . '</h2>';
+      $output .= '<p>' . t('The following are demonstrations of jCarousel module when used directly by another module or your theme. <strong>Most users do not need to manually code carousels</strong> (building carousels using Views is the most common approach), but these demonstrations provide good examples of jCarousel\'s abilities.') . '</p>';
 
       // Construct the jCarousel list.
-      $list = '<li><img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/75/199481072_b4a0d09597_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/57/199481087_33ae73a8de_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/77/199481108_4359e6b971_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/58/199481143_3c148d9dd3_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/72/199481203_ad4cdcf109_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/58/199481218_264ce20da0_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/69/199481255_fdfe885f87_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/60/199480111_87d4cb3e38_s.jpg" width="75" height="75" alt="" /></li>
-        <li><img src="http://static.flickr.com/70/229228324_08223b70fa_s.jpg" width="75" height="75" alt="" /></li>';
+      $list = '
+  <li><img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/75/199481072_b4a0d09597_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/57/199481087_33ae73a8de_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/77/199481108_4359e6b971_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/58/199481143_3c148d9dd3_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/72/199481203_ad4cdcf109_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/58/199481218_264ce20da0_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/69/199481255_fdfe885f87_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/60/199480111_87d4cb3e38_s.jpg" width="75" height="75" alt="" /></li>
+  <li><img src="http://static.flickr.com/70/229228324_08223b70fa_s.jpg" width="75" height="75" alt="" /></li>
+';
 
       // Provide the horizontal carousel demonstration.
-      $output .= '<h3>Horizontal carousel</h3><ul class="horizontalcarousel jcarousel-skin-default">' . $list . '</ul>';
+      $output .= '<h3>' . t('Horizontal carousel') . '</h3>';
+      $output .= '<p>' . t('This example uses <code>jcarousel_add()</code> directly with no options to create the default horizontal carousel.') . '</p>';
+      $list_html = '<ul class="horizontalcarousel jcarousel-skin-default">' . $list . '</ul>';
+
+      $sample = $fieldset;
+      $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('horizontalcarousel'); ?>", TRUE);
+      $output .= theme('fieldset', $sample);
+
+      $output .= $list_html;
       jcarousel_add('horizontalcarousel');
-      $output .= '<p>As you can see, simply calling <code>jcarousel_add()</code> with the element class will create the default horizontal carousel.</p>';
+
 
       // Provide the vertical carousel demonstration.
-      $output .= '<h3>Vertical carousel</h3><ul class="verticalcarousel jcarousel-skin-default">' . $list . '</ul>';
+      $output .= '<h3>' . t('Vertical carousel') . '</h3>';
+      $output .= '<p>' . t('jCarousel can accept a variety of <a href="http://sorgalla.com/projects/jcarousel/#Configuration">configuration options</a> via the second argument to <code>jcarousel_add()</code>. In this example, we created a vertical carousel.') . '</p>';
+      $list_html = '<ul class="verticalcarousel jcarousel-skin-default">' . $list . '</ul>';
+
+      $sample = $fieldset;
+      $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('verticalcarousel', array('vertical' => TRUE)); ?>", TRUE);
+      $output .= theme('fieldset', $sample);
+
+      $output .= $list_html;
       jcarousel_add('verticalcarousel', array('vertical' => TRUE));
-      $output .= '<p>The <a href="http://sorgalla.com/projects/jcarousel/#Configuration">configuration options</a> are passed via the second argument in the call to <code>jcarousel_add()</code>. In this example, we created a vertical carousel.</p>';
 
       // Provide the different skins carousel demonstration.
-      $output .= '<h3>Different skins</h3><ul class="differentskin jcarousel-skin-tango">' . $list . '</ul>';
+      $output .= '<h3>' . t('Different skins') . '</h3>';
+      $list_html = '<ul class="differentskin jcarousel-skin-tango">' . $list . '</ul>';
+      $output .= '<p>' . t('The "skin" of a carousel can be changed by setting the <code>$options[\'skin\']</code> property. This skin must match one of the skins either provided by a module or matching a skin included in your theme\'s style.css file. Skins are simply a class given to the HTML list with the name "jcarousel-skin-[skin-name]".') . '</p>';
+
+      $sample = $fieldset;
+      $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('differentskin', array('skin' => 'tango')); ?>", TRUE);
+      $output .= theme('fieldset', $sample);
+
+      $output .= $list_html;
       jcarousel_add('differentskin', array('skin' => 'tango'));
-      $output .= '<p>We can easily change the associated skin by changing the <code>$options[\'skin\']</code> property.</p>';
 
       // Another thing you can do is use the theme('jcarousel') function.
       $output .= '<h3>' . t('Theme function') . '</h3>';
+      $output .= '<p>' . t('The <code>theme(\'jcarousel\')</code> function allows you to easily create the markup and add all the JavaScript to the page in one function call. Like <code>jcarousel_add()</code> the theme function approach can also take options. In this example we create the carousel with the button next event being called when the mouse rolls over the buttons.') . '</p>';
       $items = array(
         '<img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="" />',
         '<img src="http://static.flickr.com/75/199481072_b4a0d09597_s.jpg" width="75" height="75" alt="" />',
@@ -59,17 +107,26 @@ function jcarousel_help($path, $arg) {
         'buttonNextEvent' => 'mouseover',
         'buttonPrevEvent' => 'mouseover',
       );
+      $fieldset['#description'] = t('The following PHP code may be placed in a template file or a module to create a carousel.');
+
+      $sample = $fieldset;
+      $sample['#children'] = '<code><pre>' . highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE) . '</pre></code>';
+      $output .= theme('fieldset', $sample);
       $output .= theme('jcarousel', $items, $options);
-      $output .= '<p>' . t('The theme function allows you to easily create the markup, and add all the JavaScript to the page in one function call. In this example we create the carousel with the button next event being called when the mouse rolls over the buttons.') . '</p>';
 
       // Provide a circular wrap element.
       $output .= '<h3>' . t('Circular wrap') . '</h3>';
+      $output .= '<p>' . t('This example puts the carousel into a circular wrap.') . '</p>';
+
       $options = array(
         'wrap' => 'circular',
       );
+      $sample = $fieldset;
+      $sample['#children'] = '<code><pre>' . highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE) . '</pre></code>';
+      $output .= theme('fieldset', $sample);
       $output .= theme('jcarousel', $items, $options);
+
       return $output;
-      break;
   }
 }
 
