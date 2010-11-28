@@ -16,6 +16,7 @@ function jcarousel_views_plugins() {
     'handler' => 'jcarousel_style_plugin',
     'path' => drupal_get_path('module', 'jcarousel') . '/includes',
     'theme' => 'jcarousel_view',
+    'theme path' => drupal_get_path('module', 'jcarousel') . '/includes',
     'uses row plugin' => TRUE,
     'uses options' => TRUE,
     'uses grouping' => FALSE,

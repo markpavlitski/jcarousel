@@ -5,7 +5,8 @@
 
 (function($) {
 
-Drupal.behaviors.jcarousel = function(context, settings) {
+Drupal.behaviors.jcarousel = {};
+Drupal.behaviors.jcarousel.attach = function(context, settings) {
   var settings = settings || Drupal.settings;
   for (var key in settings.jcarousel.carousels) {
     var options = settings.jcarousel.carousels[key];

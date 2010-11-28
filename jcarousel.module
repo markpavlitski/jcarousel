@@ -13,10 +13,13 @@ function jcarousel_help($path, $arg) {
   switch ($path) {
     case 'admin/help#jcarousel':
       $fieldset = array(
+        '#type' => 'fieldset',
         '#title' => t('View sample code'),
         '#description' => t('The following HTML may be printed out to the page through a node, block, or in a custom template. Then the following PHP code must be run to add the jCarousel library and CSS to the page.'),
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
+        '#attached' => array('js' => array('misc/collapse.js', 'misc/form.js')),
+        '#attributes' => array('class' => array('collapsible', 'collapsed')),
       );
 
       $output = '';
@@ -58,7 +61,7 @@ function jcarousel_help($path, $arg) {
 
       $sample = $fieldset;
       $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('horizontalcarousel'); ?>", TRUE);
-      $output .= theme('fieldset', $sample);
+      $output .= drupal_render($sample);
 
       $output .= $list_html;
       jcarousel_add('horizontalcarousel');
@@ -71,7 +74,7 @@ function jcarousel_help($path, $arg) {
 
       $sample = $fieldset;
       $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('verticalcarousel', array('vertical' => TRUE)); ?>", TRUE);
-      $output .= theme('fieldset', $sample);
+      $output .= drupal_render($sample);
 
       $output .= $list_html;
       jcarousel_add('verticalcarousel', array('vertical' => TRUE));
@@ -79,11 +82,11 @@ function jcarousel_help($path, $arg) {
       // Provide the different skins carousel demonstration.
       $output .= '<h3>' . t('Different skins') . '</h3>';
       $list_html = '<ul class="differentskin jcarousel-skin-tango">' . $list . '</ul>';
-      $output .= '<p>' . t('The "skin" of a carousel can be changed by setting the <code>$options[\'skin\']</code> property. This skin must match one of the skins either provided by a module or matching a skin included in your theme\'s style.css file. Skins are simply a class given to the HTML list with the name "jcarousel-skin-[skin-name]". A custom skin path may be specified in <code>$options[\'skin path\']</code>, or you can use one of these module-based skins:') . theme('item_list', array_keys(jcarousel_skins())) . t('Note that with skins you will often need to override certain CSS styles in your theme\'s style.css file. Certain properties (like the height and width of individual items and the carousel itself) must be manually specified directly in CSS. Not using a skin at all by specifying <code>$options[\'skin\'] = NULL</code> and then styling the entire carousel in style.css is also a good approach.') . '</p>';
+      $output .= '<p>' . t('The "skin" of a carousel can be changed by setting the <code>$options[\'skin\']</code> property. This skin must match one of the skins either provided by a module or matching a skin included in your theme\'s style.css file. Skins are simply a class given to the HTML list with the name "jcarousel-skin-[skin-name]". A custom skin path may be specified in <code>$options[\'skin path\']</code>, or you can use one of these module-based skins:') . theme('item_list', array('items' => array_keys(jcarousel_skins()))) . t('Note that with skins you will often need to override certain CSS styles in your theme\'s style.css file. Certain properties (like the height and width of individual items and the carousel itself) must be manually specified directly in CSS. Not using a skin at all by specifying <code>$options[\'skin\'] = NULL</code> and then styling the entire carousel in style.css is also a good approach.') . '</p>';
 
       $sample = $fieldset;
       $sample['#children'] = '<code><pre>' . check_plain($list_html) . '</pre></code>' . highlight_string("<?php jcarousel_add('differentskin', array('skin' => 'tango')); ?>", TRUE);
-      $output .= theme('fieldset', $sample);
+      $output .= drupal_render($sample);
 
       $output .= $list_html;
       jcarousel_add('differentskin', array('skin' => 'tango'));
@@ -110,9 +113,9 @@ function jcarousel_help($path, $arg) {
       $fieldset['#description'] = t('The following PHP code may be placed in a template file or a module to create a carousel.');
 
       $sample = $fieldset;
-      $sample['#children'] = '<code><pre>' . highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE) . '</pre></code>';
-      $output .= theme('fieldset', $sample);
-      $output .= theme('jcarousel', $items, $options);
+      $sample['#children'] = highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', array('items' => \$items, 'options' => \$options));\n?>", TRUE);
+      $output .= drupal_render($sample);
+      $output .= theme('jcarousel', array('items' => $items, 'options' => $options));
 
       // Provide a circular wrap element.
       $output .= '<h3>' . t('Circular wrap') . '</h3>';
@@ -122,9 +125,9 @@ function jcarousel_help($path, $arg) {
         'wrap' => 'circular',
       );
       $sample = $fieldset;
-      $sample['#children'] = '<code><pre>' . highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE) . '</pre></code>';
-      $output .= theme('fieldset', $sample);
-      $output .= theme('jcarousel', $items, $options);
+      $sample['#children'] = highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', array('items' => \$items, 'options' => \$options));\n?>", TRUE);
+      $output .= drupal_render($sample);
+      $output .= theme('jcarousel', array('items' => $items, 'options' => $options));
 
       return $output;
   }
@@ -157,7 +160,7 @@ function jcarousel_init() {
 function jcarousel_theme() {
   return array(
     'jcarousel' => array(
-      'arguments' => array('items' => NULL, 'options' => NULL, 'identifier' => NULL),
+      'variables' => array('items' => NULL, 'options' => NULL, 'identifier' => NULL),
     ),
   );
 }
@@ -226,7 +229,7 @@ function jcarousel_add($class_name = NULL, $options = array(), $add = TRUE) {
     drupal_alter('jcarousel_options', $options, $class_name);
 
     // Add settings for this individual carousel.
-    if (!isset($library_added[$class_name])) {
+    if (!isset($library_added[$class_name]) || !$add) {
       $library_added[$class_name] = TRUE;
 
       // Add the JavaScript settings for this carousel.
@@ -322,7 +325,10 @@ function jcarousel_skins() {
  *   automatically. Note that this is not the "id" attribute on the HTML list,
  *   instead it is one of the classes added to the UL tag.
  */
-function theme_jcarousel($items = array(), $options = array(), $identifier = NULL) {
+function theme_jcarousel($variables) {
+  $items = $variables['items'];
+  $options = $variables['options'];
+  $identifier = $variables['identifier'];
   static $unique;
 
   if (!isset($identifier)) {
