@@ -13,6 +13,7 @@ function jcarousel_help($path, $arg) {
   switch ($path) {
     case 'admin/help#jcarousel':
       $fieldset = array(
+        '#type' => 'fieldset',
         '#title' => t('View sample code'),
         '#description' => t('The following HTML may be printed out to the page through a node, block, or in a custom template. Then the following PHP code must be run to add the jCarousel library and CSS to the page.'),
         '#collapsible' => TRUE,
@@ -110,7 +111,7 @@ function jcarousel_help($path, $arg) {
       $fieldset['#description'] = t('The following PHP code may be placed in a template file or a module to create a carousel.');
 
       $sample = $fieldset;
-      $sample['#children'] = '<code><pre>' . highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE) . '</pre></code>';
+      $sample['#children'] = highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE);
       $output .= theme('fieldset', $sample);
       $output .= theme('jcarousel', $items, $options);
 
@@ -122,7 +123,7 @@ function jcarousel_help($path, $arg) {
         'wrap' => 'circular',
       );
       $sample = $fieldset;
-      $sample['#children'] = '<code><pre>' . highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE) . '</pre></code>';
+      $sample['#children'] = highlight_string("<?php\n\$items = " . var_export($items, TRUE) . ";\n\$options = " . var_export($options, TRUE) . ";\nprint theme('jcarousel', \$items, \$options);\n?>", TRUE);
       $output .= theme('fieldset', $sample);
       $output .= theme('jcarousel', $items, $options);
 
@@ -226,7 +227,7 @@ function jcarousel_add($class_name = NULL, $options = array(), $add = TRUE) {
     drupal_alter('jcarousel_options', $options, $class_name);
 
     // Add settings for this individual carousel.
-    if (!isset($library_added[$class_name])) {
+    if (!isset($library_added[$class_name]) || !$add) {
       $library_added[$class_name] = TRUE;
 
       // Add the JavaScript settings for this carousel.
