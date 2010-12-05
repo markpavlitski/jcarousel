@@ -252,7 +252,7 @@ function jcarousel_add($class_name = NULL, $options = array(), $add = TRUE) {
     // A custom skin path is possible but generally discouraged because it's
     // difficult to give it a human-readable name or reference the CSS file.
     if (isset($options['skin path'])) {
-      $attachements['css'][] = $options['skin path'];
+      $attachments['css'][] = $options['skin path'];
     }
     // The more common situation is to use a skin defined by another module
     // in hook_jcarousel_skin_info().
