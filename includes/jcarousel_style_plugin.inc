@@ -19,6 +19,7 @@ class jcarousel_style_plugin extends views_plugin_style {
     $options['visible'] = array('default' => NULL);
     $options['scroll'] = array('default' => '');
     $options['auto'] = array('default' => 0);
+    $options['autoPause'] = array('default' => '1');
     $options['animation'] = array('default' => '');
     $options['start'] = array('default' => '1');
     $options['easing'] = array('default' => NULL);
@@ -118,6 +119,12 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set.') . $ajax_warning,
       '#options' => $range,
       '#default_value' => $this->options['start'],
+    );
+    $form['advanced']['autoPause'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Pause auto-scroll on hover'),
+      '#description' => t('If auto-scrolling, pause the carousel when the user hovers the mouse over an item.'),
+      '#default_value' => $this->options['autoPause'],
     );
     $form['advanced']['vertical'] = array(
       '#type' => 'checkbox',
