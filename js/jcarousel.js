@@ -12,8 +12,15 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
     var options = settings.jcarousel.carousels[key];
 
     // Add standard options required for AJAX functionality.
-    if (options.ajax) {
+    if (options.ajax && !options.itemLoadCallback) {
       options.itemLoadCallback = Drupal.jcarousel.ajaxLoadCallback;
+    }
+
+    // If auto-scrolling, pause animation when hoving over the carousel.
+    if (options.auto && options.autoPause && !options.initCallback) {
+      options.initCallback = function(carousel, state) {
+        Drupal.jcarousel.autoPauseCallback(carousel, state);
+      }
     }
 
     // Change next and previous buttons to links for accessibility.
@@ -70,7 +77,20 @@ Drupal.jcarousel.ajaxLoadCallback = function(jcarousel, state) {
 };
 
 /**
- * AJAX Callback for all jCarousel-style views.
+ * Init callback for jCarousel. Pauses the carousel when hovering over.
+ */
+Drupal.jcarousel.autoPauseCallback = function(carousel, state) {
+  function pauseAuto() {
+    carousel.stopAuto();
+  }
+  function resumeAuto() {
+    carousel.startAuto();
+  }
+  carousel.clip.hover(pauseAuto, resumeAuto);
+};
+
+/**
+ * AJAX callback for all jCarousel-style views.
  */
 Drupal.jcarousel.ajaxResponseCallback = function(jcarousel, target, response) {
   if (response.debug) {
@@ -121,6 +141,6 @@ Drupal.jcarousel.ajaxErrorCallback = function (xhr, path) {
   }
 
   alert(Drupal.t("An error occurred at @path.\n\nError Description: @error", {'@path': path, '@error': error_text}));
-}
+};
 
 })(jQuery);
