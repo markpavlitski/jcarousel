@@ -69,6 +69,11 @@ function jcarousel_views_ajax() {
         else {
           $view->set_items_per_page($last - $first);
           $view->set_offset($first);
+
+          // TODO: $view->pager doesn't even exist in Views 3, yet it seems to
+          // fix  the Views 3 handling. Find the "official" approach here.
+          $view->pager['offset'] = $first;
+          $view->pager['items_per_page'] = $last - $first;
         }
 
         // Reuse the same DOM id so it matches that in Drupal.settings.
@@ -110,22 +115,30 @@ function jcarousel_views_add($view, $display_id = NULL) {
     }
   }
 
+  // Get the total number of items in this view.
+  $count_query = $view->build_info['count_query'];
+  $replacements = module_invoke_all('views_query_substitutions', $view);
+  $count_query = str_replace(array_keys($replacements), $replacements, $count_query);
+  $result = db_query($count_query, $view->build_info['query_args']);
+  $count = 0;
+  while ($row = db_fetch_array($result)) {
+    $count++;
+  }
+
+  // If there is just one item and wrap is circular, change it to both.
+  // This change makes it so that single items don't rotate or have arrows.
+  if ($count == 1 && $options['wrap'] = 'circular') {
+    $options['wrap'] = 'both';
+  }
+
+  // If using AJAX, adjust the view's positioning based on the current page.
   if ($view->use_ajax) {
     $options['ajax'] = TRUE;
 
-    // Get the total number of items in this view.
     $use_pager = $view->pager['use_pager'];
     $view->pager['use_pager'] = TRUE;
     $view->build($display_id);
 
-    $count_query = $view->build_info['count_query'];
-    $replacements = module_invoke_all('views_query_substitutions', $view);
-    $count_query = str_replace(array_keys($replacements), $replacements, $count_query);
-    $result = db_query($count_query, $view->build_info['query_args']);
-    $count = 0;
-    while ($row = db_fetch_array($result)) {
-      $count++;
-    }
     $options['size'] = $count;
     $view->pager['use_pager'] = $use_pager;
 
