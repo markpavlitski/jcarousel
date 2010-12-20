@@ -125,10 +125,10 @@ function jcarousel_views_add($view, $display_id = NULL) {
     $count++;
   }
 
-  // If there is just one item and wrap is circular, change it to both.
-  // This change makes it so that single items don't rotate or have arrows.
-  if ($count == 1 && $options['wrap'] = 'circular') {
-    $options['wrap'] = 'both';
+  // If there is just one item disable the auto-scroll and rotation.
+  if ($count == 1) {
+    $options['wrap'] = NULL;
+    $options['auto'] = 0;
   }
 
   // If using AJAX, adjust the view's positioning based on the current page.
