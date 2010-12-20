@@ -54,13 +54,21 @@ function jcarousel_views_ajax() {
         }
 
         // Disable the pager, render between the start and end values.
-        $view->pager['use_pager'] = FALSE;
-        $view->pager['offset'] = $first;
-        $view->pager['items_per_page'] = $last - $first;
-
-        $view->display[$display_id]->handler->set_option('use_pager', 0);
-        $view->display[$display_id]->handler->set_option('offset', $first);
-        $view->display[$display_id]->handler->set_option('items_per_page', $last - $first);
+        // Views 2:
+        if (isset($view->pager)) {
+          $view->pager['use_pager'] = FALSE;
+          $view->pager['offset'] = $first;
+          $view->pager['items_per_page'] = $last - $first;
+  
+          $view->display[$display_id]->handler->set_option('use_pager', 0);
+          $view->display[$display_id]->handler->set_option('offset', $first);
+          $view->display[$display_id]->handler->set_option('items_per_page', $last - $first);
+        }
+        // Views 3:
+        else {
+          $view->set_items_per_page($last - $first);
+          $view->set_offset($first);
+        }
 
         // Reuse the same DOM id so it matches that in Drupal.settings.
         $view->dom_id = $dom_id;
@@ -108,7 +116,11 @@ function jcarousel_views_add($view, $display_id = NULL) {
     $use_pager = $view->pager['use_pager'];
     $view->pager['use_pager'] = TRUE;
     $view->build($display_id);
-    $result = db_query($view->build_info['count_query'], $view->build_info['query_args']);
+
+    $count_query = $view->build_info['count_query'];
+    $replacements = module_invoke_all('views_query_substitutions', $view);
+    $count_query = str_replace(array_keys($replacements), $replacements, $count_query);
+    $result = db_query($count_query, $view->build_info['query_args']);
     $count = 0;
     while ($row = db_fetch_array($result)) {
       $count++;
