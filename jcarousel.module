@@ -28,7 +28,7 @@ function jcarousel_help($path, $arg) {
       $output .= '<p>';
       $output .= t('Most configuration options for the jCarousel module are provided through <a href="http://drupal.org/project/views">Views module</a>.');
       if (module_exists('views_ui')) {
-        $output .= ' ' . t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change its "Display style" to "jCarousel" and configure the remaining options there. When using the jCarousel display style with Views, you can construct any of the examples on this page as well as dynamically loaded carousels through AJAX requests.');
+        $output .= ' ' . t('You may configure a new view through the <a href="!views-url">Views module interface</a>. After adding a new view, change its "Display style" to "jCarousel" and configure the remaining options there. When using the jCarousel display style with Views, you can construct any of the examples on this page as well as dynamically loaded carousels through AJAX requests.', array('!views-url' => url('admin/build/views')));
       }
       else {
         $output .= ' ' . t('This site not have Views (or the Views UI module) installed currently. You may be able to turn on this module under your site\'s <a href="!modules-url">module page</a>, or you may have to <a href="http://drupal.org/project/views">download Views module</a> and install it.', array('!modules-url' => url('admin/build/modules')));
