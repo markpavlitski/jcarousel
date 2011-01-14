@@ -23,7 +23,7 @@ Drupal.behaviors.jcarousel = function(context, settings) {
     }
 
     // Change next and previous buttons to links for accessibility.
-    if (!options.buttonNextHTML && !options.buttonPrevHTML) {
+    if (!options.hasOwnProperty('buttonNextHTML') && !options.hasOwnProperty('buttonPrevHTML')) {
       options.buttonNextHTML = '<a href="javascript:void(0)"></a>';
       options.buttonPrevHTML = '<a href="javascript:void(0)"></a>';
     }
