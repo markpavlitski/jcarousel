@@ -109,7 +109,7 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#type' => 'textfield',
       '#title' => t('Easing effect'),
       '#size' => 10,
-      '#maxlength' => 10,
+      '#maxlength' => 128,
       '#default_value' => $this->options['easing'],
       '#description' => t('The name of the easing effect that you want to use such as "swing" (the default) or "linear". See list of options in the <a href="http://api.jquery.com/animate/">jQuery Documentation</a>.'),
     );
