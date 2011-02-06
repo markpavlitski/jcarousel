@@ -115,11 +115,13 @@ function jcarousel_views_add($view, $display_id = NULL) {
     }
   }
 
+  // Views 3 ? Views 3 : Views 2.
+  $count_query = isset($view->query->count_query) ? $view->query->count_query : $view->build_info['count_query'];
+  $count_args = isset($view->query->query_args) ? $view->query->query_args : $view->build_info['query_args'];
+
   // Get the total number of items in this view.
   $replacements = module_invoke_all('views_query_substitutions', $view);
-  $count_query = $view->build_info['count_query'];
   $count_query = str_replace(array_keys($replacements), $replacements, $count_query);
-  $count_args = $view->build_info['query_args'];
   if (is_array($count_args)) {
     foreach ($count_args as $arg_id => $arg) {
       $count_args[$arg_id] = str_replace(array_keys($replacements), $replacements, $arg);
