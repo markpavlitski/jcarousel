@@ -23,9 +23,9 @@ listings of images or other content into a carousel.
 1) Install the Views module (http://drupal.org/project/views) on your Drupal
    site if you have not already.
 
-2) Add a new view at Administer -> Site Building -> Views (admin/build/views).
+2) Add a new view at Administration -> Structure -> Views (admin/structure/views).
 
-3) Change the "Style" of the view under "Basic settings" to "jCarousel".
+3) Change the "Style" of the view under "Style settings" to "jCarousel".
    Configure the options for the carousel such as the animation speed and skin.
 
 4) For long lists within a Carousel, it may be useful to use AJAX to load
@@ -65,7 +65,7 @@ in your carousel into theme('jcarousel'). This can be useful to not only add
 the necessary JavaScript and CSS to the page but also to print out the HTML
 list.
 
-  print theme('jcarousel', $items, $options, $identifier);
+  print theme('jcarousel', array('items' => $items, 'options' => $options, 'identifier' => $identifier));
 
 See admin/help/jcarousel for demonstrations of how to utilize jCarousel in your
 own code.
