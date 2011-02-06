@@ -70,10 +70,9 @@ function jcarousel_views_ajax() {
           $view->set_items_per_page($last - $first);
           $view->set_offset($first);
 
-          // TODO: $view->pager doesn't even exist in Views 3, yet it seems to
-          // fix  the Views 3 handling. Find the "official" approach here.
-          $view->pager['offset'] = $first;
-          $view->pager['items_per_page'] = $last - $first;
+          // Redundant but apparently needed.
+          $view->items_per_page = $last - $first;
+          $view->offset = $first;
         }
 
         // Reuse the same DOM id so it matches that in Drupal.settings.
@@ -142,28 +141,46 @@ function jcarousel_views_add($view, $display_id = NULL) {
   // If using AJAX, adjust the view's positioning based on the current page.
   if ($view->use_ajax) {
     $options['ajax'] = TRUE;
-
-    $use_pager = $view->pager['use_pager'];
-    $view->pager['use_pager'] = TRUE;
-    $view->build($display_id);
-
     $options['size'] = $count;
-    $view->pager['use_pager'] = $use_pager;
+
+    // Views 2:
+    if (isset($view->pager)) {
+      // Enable and adjust the pager to get the correct page.
+      $use_pager = $view->pager['use_pager'];
+      $view->pager['use_pager'] = TRUE;
+      $view->build($display_id);
+      $view->pager['use_pager'] = $use_pager;
+
+      // Create generic variable names.
+      $pager_current_page = $view->pager['current_page'];
+      $pager_items_per_page = $view->pager['items_per_page'];
+      $pager_offset = $view->pager['offset'];
+    }
+    // Views 3:
+    else {
+      // Adjusting the query is not necessary.
+      $view->build($display_id);
+
+      // Create generic variable names.
+      $pager_current_page = $view->current_page;
+      $pager_items_per_page = $view->items_per_page;
+      $pager_offset = $view->offset;
+    }
 
     // If starting in the middle of a view, initialize the carousel at that
     // position. Strangely the carousel must pre-load empty LI items all the way
     // up until the active item, making this inefficient for large lists.
-    if ($view->pager['use_pager'] && $view->pager['current_page']) {
+    if ($pager_current_page) {
       // TODO: Pagers and carousels do not work well together. jCarousel should
       // give items the class "jcarousel-item-[offset]", but instead it always
       // starts with "1", making it impossible to define a prepopulated list
       // as the middle of an AJAX view.
-      $options['start'] = ($view->pager['current_page'] * $view->pager['items_per_page']) + ($view->pager['offset'] + 1);
-      $options['offset'] = ($view->pager['current_page'] * $view->pager['items_per_page']) + ($view->pager['offset'] + 1);
+      $options['start'] = ($pager_current_page * $pager_items_per_page) + ($pager_offset + 1);
+      $options['offset'] = ($pager_current_page * $pager_items_per_page) + ($pager_offset + 1);
     }
-    elseif ($view->pager['offset']) {
-      $options['start'] = $view->pager['offset'] + 1;
-      $options['offset'] = $view->pager['offset'] + 1;
+    elseif ($pager_offset) {
+      $options['start'] = $pager_offset + 1;
+      $options['offset'] = $pager_offset + 1;
     }
   }
 
@@ -189,9 +206,12 @@ function template_preprocess_jcarousel_view(&$variables) {
   }
   $variables['jcarousel_classes'] = implode(' ', $variables['jcarousel_classes_array']);
 
+  // Views 2/3 compatibility.
+  $pager_offset = isset($view->pager['offset']) ? $view->pager['offset'] : $view->offset;
+
   // Give each item a class to identify where in the carousel it belongs.
   foreach ($variables['rows'] as $id => $row) {
-    $variables['classes'][$id] = 'jcarousel-item-' . ($id + 1 + $view->pager['offset']);
+    $variables['classes'][$id] = 'jcarousel-item-' . ($id + 1 + $pager_offset);
   }
 
 }
