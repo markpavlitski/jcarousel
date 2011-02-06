@@ -116,10 +116,16 @@ function jcarousel_views_add($view, $display_id = NULL) {
   }
 
   // Get the total number of items in this view.
-  $count_query = $view->build_info['count_query'];
   $replacements = module_invoke_all('views_query_substitutions', $view);
+  $count_query = $view->build_info['count_query'];
   $count_query = str_replace(array_keys($replacements), $replacements, $count_query);
-  $result = db_query($count_query, $view->build_info['query_args']);
+  $count_args = $view->build_info['query_args'];
+  if (is_array($count_args)) {
+    foreach ($count_args as $arg_id => $arg) {
+      $count_args[$arg_id] = str_replace(array_keys($replacements), $replacements, $arg);
+    }
+  }
+  $result = db_query($count_query, $count_args);
   $count = 0;
   while ($row = db_fetch_array($result)) {
     $count++;
