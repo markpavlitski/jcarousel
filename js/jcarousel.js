@@ -11,6 +11,18 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
   for (var key in settings.jcarousel.carousels) {
     var options = settings.jcarousel.carousels[key];
 
+    // Callbacks need to be converted from a string to an actual function.
+    for (var optionKey in options) {
+      if (optionKey.match(/Callback$/)) {
+        var callbackFunction = window;
+        var callbackParents = options[optionKey].split('.');
+        for (var objectParent in callbackParents) {
+          callbackFunction = callbackFunction[callbackParents[objectParent]];
+        }
+        options[optionKey] = callbackFunction;
+      }
+    }
+
     // Add standard options required for AJAX functionality.
     if (options.ajax && !options.itemLoadCallback) {
       options.itemLoadCallback = Drupal.jcarousel.ajaxLoadCallback;
