@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file jcarousel-view.tpl.php
