@@ -115,7 +115,7 @@ class jcarousel_style_plugin extends views_plugin_style {
     $form['advanced']['start'] = array(
       '#type' => 'select',
       '#title' => t('Start position'),
-      '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set.') . $ajax_warning,
+      '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set.'),
       '#options' => $range,
       '#default_value' => $this->options['start'],
     );
