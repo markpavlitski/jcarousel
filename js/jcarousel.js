@@ -105,6 +105,8 @@ Drupal.jcarousel.autoPauseCallback = function(carousel, state) {
     carousel.startAuto();
   }
   carousel.clip.hover(pauseAuto, resumeAuto);
+  carousel.buttonNext.hover(pauseAuto, resumeAuto);
+  carousel.buttonPrev.hover(pauseAuto, resumeAuto);
 };
 
 /**
