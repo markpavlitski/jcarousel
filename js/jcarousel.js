@@ -9,10 +9,16 @@ Drupal.behaviors.jcarousel = function(context, settings) {
   var settings = settings || Drupal.settings;
   for (var key in settings.jcarousel.carousels) {
     var options = settings.jcarousel.carousels[key];
+    var $carousel = $(options.selector + ':not(.jcarousel-processed)', context);
+
+    // If this carousel has already been processed or doesn't exist, move on.
+    if (!$carousel.length) {
+      continue;
+    }
 
     // Callbacks need to be converted from a string to an actual function.
     for (var optionKey in options) {
-      if (optionKey.match(/Callback$/)) {
+      if (optionKey.match(/Callback$/) && typeof options[optionKey] == 'string') {
         var callbackFunction = window;
         var callbackParents = options[optionKey].split('.');
         for (var objectParent in callbackParents) {
@@ -41,7 +47,7 @@ Drupal.behaviors.jcarousel = function(context, settings) {
     }
 
     // Initialize the jcarousel.
-    var $jcarousel = $(options.selector, context).jcarousel(options).parents('.jcarousel-container:first').parent();
+    $carousel.addClass('jcarousel-processed').jcarousel(options);
   }
 };
 
