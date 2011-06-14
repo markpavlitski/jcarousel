@@ -59,7 +59,7 @@ function jcarousel_views_ajax() {
           $view->pager['use_pager'] = FALSE;
           $view->pager['offset'] = $first;
           $view->pager['items_per_page'] = $last - $first;
-  
+
           $view->display[$display_id]->handler->set_option('use_pager', 0);
           $view->display[$display_id]->handler->set_option('offset', $first);
           $view->display[$display_id]->handler->set_option('items_per_page', $last - $first);
@@ -186,7 +186,7 @@ function template_preprocess_jcarousel_view(&$variables) {
     'jcarousel',
     drupal_clean_css_identifier('jcarousel-view--' . $view->name . '--' . $display_id),
   );
-  if ($options['skin']) {
+  if (!empty($options['skin'])) {
     $variables['jcarousel_classes_array'][] = 'jcarousel-skin-' . $options['skin'];
   }
   $variables['jcarousel_classes'] = implode(' ', $variables['jcarousel_classes_array']);
