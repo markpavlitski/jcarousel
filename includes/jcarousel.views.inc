@@ -113,6 +113,18 @@ function jcarousel_views_add($view, $display_id = NULL) {
     }
   }
 
+  // By default limit the scrolling to the same number of items as are visible
+  // to avoid display glitches.
+  if (empty($options['scroll']) && !empty($options['visible'])) {
+    $options['scroll'] = $options['visible'];
+  }
+
+  // By default limit the scrolling to the same number of items as are visible
+  // to avoid display glitches.
+  if (empty($options['scroll']) && !empty($options['visible'])) {
+    $options['scroll'] = $options['visible'];
+  }
+
   // Get the total number of items in this view.
   $count_query = $view->build_info['count_query']->countQuery();
   $count = $count_query->execute()->fetchField();
