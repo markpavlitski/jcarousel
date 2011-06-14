@@ -344,8 +344,10 @@ function theme_jcarousel($variables) {
   }
 
   $output = '<ul class="' . $classes . '">';
-  foreach ($items as $item) {
-    $output .= '<li>'. $item .'</li>';
+  if (is_array($items)) {
+    foreach ($items as $item) {
+      $output .= '<li>' . $item . '</li>';
+    }
   }
   $output .= '</ul>';
   return $output;
