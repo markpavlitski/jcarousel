@@ -114,7 +114,7 @@ function jcarousel_views_add($view, $display_id = NULL) {
   }
 
   // Views 3 ? Views 3 : Views 2.
-  $count_query = isset($view->query->count_query) ? $view->query->count_query : $view->build_info['count_query'];
+  $count_query = isset($view->query->count_query) ? $view->query->count_query : db_rewrite_sql($view->build_info['count_query'], $view->base_table, $view->base_field, array('view' => &$view));
   $count_args = isset($view->query->query_args) ? $view->query->query_args : $view->build_info['query_args'];
 
   // By default limit the scrolling to the same number of items as are visible
