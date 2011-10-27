@@ -39,10 +39,9 @@ Drupal.behaviors.jcarousel = function(context, settings) {
       }
     }
 
-    // Change next and previous buttons to links for accessibility.
     if (!options.hasOwnProperty('buttonNextHTML') && !options.hasOwnProperty('buttonPrevHTML')) {
-      options.buttonNextHTML = '<a href="javascript:void(0)"></a>';
-      options.buttonPrevHTML = '<a href="javascript:void(0)"></a>';
+      options.buttonNextHTML = Drupal.theme('jCarouselButton', 'next');
+      options.buttonPrevHTML = Drupal.theme('jCarouselButton', 'previous');
     }
 
     // Initialize the jcarousel.
@@ -159,6 +158,11 @@ Drupal.jcarousel.ajaxErrorCallback = function (xhr, path) {
   }
 
   alert(Drupal.t("An error occurred at @path.\n\nError Description: @error", {'@path': path, '@error': error_text}));
+};
+
+Drupal.theme.prototype.jCarouselButton = function(type) {
+  // Use links for buttons for accessibility.
+  return '<a href="javascript:void()"></a>';
 };
 
 })(jQuery);
