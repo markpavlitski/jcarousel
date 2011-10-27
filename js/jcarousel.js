@@ -7,7 +7,7 @@
 
 Drupal.behaviors.jcarousel = {};
 Drupal.behaviors.jcarousel.attach = function(context, settings) {
-  var settings = settings || Drupal.settings;
+  settings = settings || Drupal.settings;
   $.each(settings.jcarousel.carousels, function(key, options) {
     var $carousel = $(options.selector + ':not(.jcarousel-processed)', context);
 
@@ -37,7 +37,7 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
     if (options.auto && options.autoPause && !options.initCallback) {
       options.initCallback = function(carousel, state) {
         Drupal.jcarousel.autoPauseCallback(carousel, state);
-      }
+      };
     }
 
     if (!options.hasOwnProperty('buttonNextHTML') && !options.hasOwnProperty('buttonPrevHTML')) {
@@ -84,9 +84,11 @@ Drupal.jcarousel.ajaxLoadCallback = function(jcarousel, state) {
     type: 'GET',
     data: viewData,
     success: function(response) {
-      Drupal.jcarousel.ajaxResponseCallback(jcarousel, target, response)
+      Drupal.jcarousel.ajaxResponseCallback(jcarousel, target, response);
     },
-    error: function(xhr) { Drupal.jcarousel.ajaxErrorCallback(xhr, ajaxPath); },
+    error: function(xhr) {
+      Drupal.jcarousel.ajaxErrorCallback(xhr, ajaxPath);
+    },
     dataType: 'json'
   });
 
