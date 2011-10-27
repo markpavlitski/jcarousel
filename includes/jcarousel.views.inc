@@ -201,7 +201,7 @@ function template_preprocess_jcarousel_view(&$variables) {
   $settings = jcarousel_views_add($view, $display_id);
 
   // Build the list of classes for the carousel.
-  $options = $view->style_options;
+  $options = $view->style_plugin->options;
   $variables['jcarousel_classes_array'] = array(
     'jcarousel',
     views_css_safe('jcarousel-view--' . $view->name . '--' . $display_id),
