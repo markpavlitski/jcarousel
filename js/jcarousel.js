@@ -8,26 +8,25 @@
 Drupal.behaviors.jcarousel = {};
 Drupal.behaviors.jcarousel.attach = function(context, settings) {
   var settings = settings || Drupal.settings;
-  for (var key in settings.jcarousel.carousels) {
-    var options = settings.jcarousel.carousels[key];
+  $.each(settings.jcarousel.carousels, function(key, options) {
     var $carousel = $(options.selector + ':not(.jcarousel-processed)', context);
 
     // If this carousel has already been processed or doesn't exist, move on.
     if (!$carousel.length) {
-      continue;
+      return;
     }
 
     // Callbacks need to be converted from a string to an actual function.
-    for (var optionKey in options) {
+    $.each(options, function(optionKey) {
       if (optionKey.match(/Callback$/) && typeof options[optionKey] == 'string') {
         var callbackFunction = window;
         var callbackParents = options[optionKey].split('.');
-        for (var objectParent in callbackParents) {
+        $.each(callbackParents, function(objectParent) {
           callbackFunction = callbackFunction[callbackParents[objectParent]];
-        }
+        });
         options[optionKey] = callbackFunction;
       }
-    }
+    });
 
     // Add standard options required for AJAX functionality.
     if (options.ajax && !options.itemLoadCallback) {
@@ -49,7 +48,7 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
 
     // Initialize the jcarousel.
     $carousel.addClass('jcarousel-processed').jcarousel(options);
-  }
+  });
 };
 
 Drupal.jcarousel = {};
