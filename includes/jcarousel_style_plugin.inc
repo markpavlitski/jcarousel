@@ -98,7 +98,7 @@ class jcarousel_style_plugin extends views_plugin_style {
         'after' => t('After'),
       ),
       '#default_value' => $this->options['navigation'],
-      '#description' => t('Enable a clickable navigation list to jump straight to a given page.') . ' <strong>' . t('This option has no effect with AJAX-enabled carousels.') . '</strong>',
+      '#description' => t('Enable a clickable navigation list to jump straight to a given page.'),
     );
 
     $form['advanced'] = array(

@@ -40,7 +40,7 @@ Drupal.behaviors.jcarousel = function(context, settings) {
     }
 
     // Add navigation to the carousel if enabled.
-    if (options.navigation && !options.ajax && !options.setupCallback && !options.itemVisibleInCallback) {
+    if (options.navigation && !options.setupCallback && !options.itemVisibleInCallback) {
       options.setupCallback = function(carousel) {
         Drupal.jcarousel.addNavigation(carousel, options.navigation);
       };
@@ -126,7 +126,11 @@ Drupal.jcarousel.addNavigation = function(carousel, position) {
   // while .last is a count, so we need to reset the .first number to be
   // 0-based to make the math work.
   carousel.pageSize = carousel.last - (carousel.first - 1);
-  carousel.pageCount = Math.ceil($(carousel.list).children('li').length / carousel.pageSize);
+
+  // jCarousel's Views integration sets "size" in the carousel options. Use that
+  // if available, otherwise count the number of items in the carousel.
+  var itemCount = carousel.options.size ? carousel.options.size : $(carousel.list).children('li').length;
+  carousel.pageCount =  Math.ceil(itemCount / carousel.pageSize);
   carousel.pageNumber = 1;
 
   // Don't add a pager if there's only one page of results.
