@@ -208,7 +208,7 @@ Drupal.jcarousel.ajaxResponseCallback = function(jcarousel, target, response) {
   var jcarousel = $view.find('ul.jcarousel').data('jcarousel');
 
   // Add items to the jCarousel.
-  $('ul.jcarousel li', response.display).each(function(i) {
+  $('ul.jcarousel > li', response.display).each(function(i) {
     var itemNumber = this.className.replace(/.*?jcarousel-item-(\d+).*?/, '$1');
     jcarousel.add(itemNumber, this.innerHTML);
   });
