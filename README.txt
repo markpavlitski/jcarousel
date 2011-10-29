@@ -24,15 +24,19 @@ listings of images or other content into a carousel.
 
 2) Add a new view at Administration -> Structure -> Views (admin/structure/views).
 
-3) Change the "Style" of the view under "Style settings" to "jCarousel".
-   Configure the options for the carousel such as the animation speed and skin.
+3) Change the "Display format" of the view to "jCarousel". Disable the
+   "Use pager" option, which cannot be used with the jCarousel style. Click the
+   "Continue & Edit" button to configure the rest of the View.
 
-4) For long lists within a Carousel, it may be useful to use AJAX to load
+4) Click on the "Settings" link next to the jCarousel Format to configure the
+   options for the carousel such as the animation speed and skin.
+
+5) For long lists within a Carousel, it may be useful to use AJAX to load
    additional items into the carousel when clicking on the left or right arrows.
    To do this, change the "Use AJAX" option to "Yes" within the view, under
-   "Basic Settings".
+   "Advanced".
 
-5) Add the items you would like to include in the rotator under the "Fields"
+6) Add the items you would like to include in the rotator under the "Fields"
    section, and build out the rest of the view as you would normally. Note that
    the preview of the carousel within Views probably will not appear correctly
    because the necessary JavaScript and CSS is not loaded in the Views
