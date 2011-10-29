@@ -308,7 +308,7 @@ function jcarousel_skins() {
 
 /**
  * Creates a jCarousel element on the page.
- * 
+ *
  * @param $items
  *   The items to appear in the carousel.
  * @param $options
