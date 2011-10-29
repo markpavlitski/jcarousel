@@ -39,6 +39,16 @@ Drupal.behaviors.jcarousel = function(context, settings) {
       };
     }
 
+    // Add navigation to the carousel if enabled.
+    if (options.navigation && !options.ajax && !options.setupCallback && !options.itemVisibleInCallback) {
+      options.setupCallback = function(carousel) {
+        Drupal.jcarousel.addNavigation(carousel, options.navigation);
+      };
+      options.itemLastInCallback = {
+        onAfterAnimation: Drupal.jcarousel.updateNavigationActive
+      };
+    }
+
     if (!options.hasOwnProperty('buttonNextHTML') && !options.hasOwnProperty('buttonPrevHTML')) {
       options.buttonNextHTML = Drupal.theme('jCarouselButton', 'next');
       options.buttonPrevHTML = Drupal.theme('jCarouselButton', 'previous');
@@ -109,6 +119,84 @@ Drupal.jcarousel.autoPauseCallback = function(carousel, state) {
 };
 
 /**
+ * Setup callback for jCarousel. Adds the navigation to the carousel if enabled.
+ */
+Drupal.jcarousel.addNavigation = function(carousel, position) {
+  // This only works for a positive starting point.  Also, .first is 1-based
+  // while .last is a count, so we need to reset the .first number to be
+  // 0-based to make the math work.
+  carousel.pageSize = carousel.last - (carousel.first - 1);
+  carousel.pageCount = Math.ceil($(carousel.list).children('li').length / carousel.pageSize);
+  carousel.pageNumber = 1;
+
+  // Don't add a pager if there's only one page of results.
+  if (carousel.pageCount <= 1) {
+    return;
+  }
+
+  // Add a class to the wrapper so it can adjust CSS.
+  $(carousel.list).parents('.jcarousel-container:first').addClass('jcarousel-navigation-' + position);
+
+  var navigation = $('<ul class="jcarousel-navigation"></ul>');
+
+  for (var i = 1; i <= carousel.pageCount; i++) {
+    var pagerItem = $(Drupal.theme('jCarouselPageLink', i));
+    var listItem = $('<li></li>').attr('jcarousel-page', i).append(pagerItem);
+    navigation.append(listItem);
+
+    // Make the first page active by default.
+    if (i === 1) {
+      listItem.addClass('active');
+    }
+
+    // Scroll to the correct page when a pager is clicked.
+    pagerItem.bind('click', function() {
+      // We scroll to the new page based on item offsets. This works with
+      // circular carousels that do not divide items evenly, making it so that
+      // going back or forward in pages will not skip or repeat any items.
+      var newPageNumber = $(this).parent().attr('jcarousel-page');
+      var itemOffset = (newPageNumber - carousel.pageNumber) * carousel.pageSize;
+
+      if (itemOffset) {
+        carousel.scroll(carousel.first + itemOffset);
+      }
+
+      return false;
+    });
+  }
+
+  $(carousel.list).parents('.jcarousel-clip:first')[position](navigation);
+}
+
+/**
+ * itemVisibleInCallback for jCarousel. Update the navigation after page change.
+ */
+Drupal.jcarousel.updateNavigationActive = function(carousel, item, idx, state) {
+  // The navigation doesn't even exist yet when this is called on init.
+  var $listItems = $(carousel.list).parents('.jcarousel-container:first').find('.jcarousel-navigation li');
+  if ($listItems.length == 0) {
+    return;
+  }
+
+  // jCarousel does some very odd things with circular wraps. Items before the
+  // first item are given negative numbers and items after the last are given
+  // numbers beyond the total number of items. This complicated logic calculates
+  // which page number is active based off this numbering scheme.
+  var pageNumber = Math.ceil(idx / carousel.pageSize);
+  if (pageNumber <= 0 || pageNumber > carousel.pageCount) {
+    pageNumber = pageNumber % carousel.pageCount;
+    pageNumber = pageNumber == 0 ? carousel.pageCount : pageNumber;
+    pageNumber = pageNumber < 0 ? pageNumber + carousel.pageCount : pageNumber;
+  }
+  carousel.pageNumber = pageNumber;
+  var currentPage = $listItems.get(carousel.pageNumber - 1);
+
+  // Set the current page to be active.
+  $listItems.not(currentPage).removeClass('active');
+  $(currentPage).addClass('active');
+}
+
+/**
  * AJAX callback for all jCarousel-style views.
  */
 Drupal.jcarousel.ajaxResponseCallback = function(jcarousel, target, response) {
@@ -164,7 +252,11 @@ Drupal.jcarousel.ajaxErrorCallback = function (xhr, path) {
 
 Drupal.theme.prototype.jCarouselButton = function(type) {
   // Use links for buttons for accessibility.
-  return '<a href="javascript:void()"></a>';
+  return '<a href="javascript:void(0)"></a>';
+};
+
+Drupal.theme.prototype.jCarouselPageLink = function(pageNumber) {
+  return '<a href="#"><span>' + (pageNumber) + '</span></a>';
 };
 
 })(jQuery);
