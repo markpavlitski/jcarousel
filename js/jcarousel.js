@@ -260,7 +260,7 @@ Drupal.theme.prototype.jCarouselButton = function(type) {
 };
 
 Drupal.theme.prototype.jCarouselPageLink = function(pageNumber) {
-  return '<a href="#"><span>' + (pageNumber) + '</span></a>';
+  return '<a href="javascript:void(0)"><span>' + (pageNumber) + '</span></a>';
 };
 
 })(jQuery);
