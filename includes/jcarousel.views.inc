@@ -129,6 +129,10 @@ function jcarousel_views_add($view, $display_id = NULL) {
   $count_query = $view->build_info['count_query']->countQuery();
   $count = $count_query->execute()->fetchField();
 
+  // Views may already populate total_rows later, but since we've already
+  // generated this value, we might as well make it available.
+  $view->total_rows = $count;
+
   // If there is just one item disable the auto-scroll and rotation.
   if ($count == 1) {
     $options['wrap'] = NULL;
