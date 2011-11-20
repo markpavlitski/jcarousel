@@ -7,6 +7,12 @@
 
 Drupal.behaviors.jcarousel = function(context, settings) {
   settings = settings || Drupal.settings;
+
+  // If no carousels exist on this part of the page, work no further.
+  if (!settings.jcarousel || !settings.jcarousel.carousels) {
+    return;
+  }
+
   $.each(settings.jcarousel.carousels, function(key, options) {
     var $carousel = $(options.selector + ':not(.jcarousel-processed)', context);
 
