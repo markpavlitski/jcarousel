@@ -208,6 +208,8 @@ function template_preprocess_jcarousel_view(&$variables) {
 
   // Give each item a class to identify where in the carousel it belongs.
   foreach ($variables['rows'] as $id => $row) {
-    $variables['row_classes'][$id] = 'jcarousel-item-' . ($id + 1 + $pager_offset);
+    $number = $id + 1 + $pager_offset;
+    $zebra = ($number % 2 == 0) ? 'even' : 'odd';
+    $variables['row_classes'][$id] = 'jcarousel-item-' . $number . ' ' . $zebra;
   }
 }
