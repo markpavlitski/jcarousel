@@ -224,6 +224,9 @@ Drupal.jcarousel.ajaxResponseCallback = function(jcarousel, target, response) {
     jcarousel.add(itemNumber, this.innerHTML);
   });
 
+  // Add Drupal behaviors to the content of the carousel to affect new items.
+  Drupal.attachBehaviors(jcarousel.list.get(0));
+
   // Treat messages the same way that Views typically handles messages.
   if (response.messages) {
     // Show any messages (but first remove old ones, if there are any).
