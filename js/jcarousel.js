@@ -85,9 +85,9 @@ Drupal.jcarousel.ajaxLoadCallback = function(jcarousel, state) {
 
   // Find this view's settings in the Views AJAX settings.
   var settings;
-  $.each(Drupal.settings.views.ajaxViews, function(i, viewSettings) {
-    if ($view.is('.view-dom-id-' + viewSettings['view_dom_id'])) {
-      settings = viewSettings;
+  $.each(Drupal.settings.jcarousel.carousels, function(domID, carouselSettings) {
+    if ($list.is('.' + domID)) {
+      settings = carouselSettings['view_options'];
     }
   });
 
