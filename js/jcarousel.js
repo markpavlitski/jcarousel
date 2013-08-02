@@ -14,6 +14,8 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
     return;
   }
 
+  $("ul.jcarousel li").css("display", "");
+
   $.each(settings.jcarousel.carousels, function(key, options) {
     var $carousel = $(options.selector + ':not(.jcarousel-processed)', context);
 
