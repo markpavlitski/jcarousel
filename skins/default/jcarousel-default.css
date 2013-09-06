@@ -10,6 +10,17 @@
 
 .jcarousel-skin-default {
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  /* You need at least a height, adjust this to your needs */
+  height: 202px;
+  padding: 20px 40px;
+}
+
+.jcarousel-skin-default ul {
+  width: 20000em;
+  position: absolute;
+  list-style: none;
 }
 
 .jcarousel-skin-default .jcarousel-container-horizontal {
@@ -44,6 +55,7 @@
   border: 1px solid #CCC;
   list-style: none;
   background: #fff none;
+  float: left;
 }
 
 .jcarousel-skin-default .jcarousel-item-horizontal {

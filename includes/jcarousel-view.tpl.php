@@ -5,8 +5,15 @@
  * View template to display a list as a carousel.
  */
 ?>
-<ul class="<?php print $jcarousel_classes; ?>">
-  <?php foreach ($rows as $id => $row): ?>
-    <li class="<?php print $row_classes[$id]; ?>" style="display: none;"><?php print $row; ?></li>
-  <?php endforeach; ?>
-</ul>
+
+ <div class="jcarousel-wrapper">
+  <div class="<?php print $jcarousel_classes; ?>">
+    <ul>
+      <?php foreach ($rows as $id => $row): ?>
+        <li class="<?php print $row_classes[$id]; ?>"><?php print $row; ?></li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+  <a class="jcarousel-prev" href="#">Prev</a>
+  <a class="jcarousel-next" href="#">Next</a>
+</div>

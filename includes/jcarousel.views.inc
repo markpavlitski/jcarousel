@@ -248,6 +248,6 @@ function template_preprocess_jcarousel_view(&$variables) {
   foreach ($variables['rows'] as $id => $row) {
     $number = $id + 1 + $pager_offset;
     $zebra = ($number % 2 == 0) ? 'even' : 'odd';
-    $variables['row_classes'][$id] = 'jcarousel-item-' . $number . ' ' . $zebra;
+    $variables['row_classes'][$id] = 'jcarousel-item jcarousel-item-' . $number . ' ' . $zebra;
   }
 }

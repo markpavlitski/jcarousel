@@ -3,6 +3,8 @@ description = Create jQuery-based carousel rotators.
 package = User interface
 core = 7.x
 
+dependencies[] = jquery_update
+
 files[] = jcarousel.module
 files[] = includes/jcarousel.views.inc
 files[] = includes/jcarousel_style_plugin.inc

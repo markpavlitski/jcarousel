@@ -14,8 +14,6 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
     return;
   }
 
-  $("ul.jcarousel li").css("display", "");
-
   $.each(settings.jcarousel.carousels, function(key, options) {
     var $carousel = $(options.selector + ':not(.jcarousel-processed)', context);
 
@@ -70,6 +68,14 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
 
     // Initialize the jcarousel.
     $carousel.addClass('jcarousel-processed').jcarousel(options);
+    $carousel.siblings('.jcarousel-prev:first').jcarouselControl({
+      target: '-=1',
+      carousel: $carousel
+    });
+    $carousel.siblings('.jcarousel-next:first').jcarouselControl({
+      target: '+=1',
+      carousel: $carousel
+    });
   });
 };
 
