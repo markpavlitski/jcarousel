@@ -149,9 +149,8 @@ Drupal.jcarousel.setupCarousel = function(carousel) {
   carousel.pageNumber = 1;
 
   // Disable the previous/next arrows if there is only one page.
-  if (carousel.pageCount == 1) {
-    carousel.buttonNext.addClass('jcarousel-next-disabled').attr('disabled', true);
-    carousel.buttonPrev.addClass('jcarousel-prev-disabled').attr('disabled', true);
+  if (carousel.options.wrap != 'circular' && carousel.pageCount == 1) {
+    carousel.buttons(false, false);
   }
 
   // Always remove the hard-coded display: block from the navigation.
