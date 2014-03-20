@@ -13,7 +13,10 @@ Installation
    usually be sites/all/modules/contrib/.
 
 2) Download jCarousel v0.3 from the project download page
-   (http://sorgalla.com/jcarousel/dist/) and place it in sites/all/libraries/.
+   (http://sorgalla.com/jcarousel/dist/) and place it in sites/all/libraries/
+   so that it is available as:
+   sites/all/libraries/jcarousel/jcarousel.jquery.js or
+   sites/all/libraries/jcarousel/jcarousel.jquery.min.js
 
 3) Enable the module within your Drupal site at Administer -> Site Building ->
    Modules (admin/build/modules).
