@@ -4,6 +4,7 @@ package = User interface
 core = 7.x
 
 dependencies[] = jquery_update
+dependencies[] = libraries (2.x)
 
 files[] = jcarousel.module
 files[] = includes/jcarousel.views.inc

@@ -13,7 +13,7 @@
 class jcarousel_style_plugin extends views_plugin_style {
   function option_definition() {
     $options = parent::option_definition();
-    $options['wrap'] = array('default' => NULL);
+    $options['wrap'] = array('default' => 'circular');
     $options['skin'] = array('default' => 'default');
     $options['visible'] = array('default' => NULL);
     $options['scroll'] = array('default' => '');
@@ -23,6 +23,7 @@ class jcarousel_style_plugin extends views_plugin_style {
     $options['start'] = array('default' => '1');
     $options['easing'] = array('default' => NULL);
     $options['vertical'] = array('default' => FALSE);
+    $options['center'] = array('default' => FALSE);
     $options['navigation'] = array('default' => '');
     $options['ajax'] = array('default' => 0);
     return $options;
@@ -147,8 +148,14 @@ class jcarousel_style_plugin extends views_plugin_style {
     $form['advanced']['vertical'] = array(
       '#type' => 'checkbox',
       '#title' => t('Vertical'),
-      '#description' => t('Specifies wether the carousel appears in horizontal or vertical orientation. Changes the carousel from a left/right style to a up/down style carousel. Defaults to horizontal.'),
+      '#description' => t('Specifies whether the carousel appears in horizontal or vertical orientation. Changes the carousel from a left/right style to a up/down style carousel. Defaults to horizontal.'),
       '#default_value' => $this->options['vertical'],
+    );
+    $form['advanced']['center'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Center'),
+      '#description' => t('Specifies wether the targeted item should be centered inside the root element. Note: This feature is experimental and may not work with all setups.'),
+      '#default_value' => $this->options['center'],
     );
   }
 

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @file jcarousel-view.tpl.php
+ * @file views-view-jcarousel.tpl.php
  * View template to display a list as a carousel.
  */
 ?>
 
  <div class="jcarousel-wrapper">
-  <div class="<?php print $jcarousel_classes; ?>">
+  <div <?php print $data_attributes; ?> class="<?php print $jcarousel_classes; ?>">
     <ul>
       <?php foreach ($rows as $id => $row): ?>
         <li class="<?php print $row_classes[$id]; ?>"><?php print $row; ?></li>

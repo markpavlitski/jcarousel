@@ -14,7 +14,7 @@ function jcarousel_views_plugins() {
     'help' => t('Display rows in a carousel via jCarousel.'),
     'handler' => 'jcarousel_style_plugin',
     'path' => drupal_get_path('module', 'jcarousel') . '/includes',
-    'theme' => 'jcarousel_view',
+    'theme' => 'views_view_jcarousel',
     'theme path' => drupal_get_path('module', 'jcarousel') . '/includes',
     'uses row plugin' => TRUE,
     'uses options' => TRUE,
@@ -102,7 +102,7 @@ function jcarousel_views_ajax() {
 /**
  * Adds necessary CSS and JS for Views-based carousels.
  */
-function jcarousel_views_add($view, $display_id = NULL) {
+function jcarousel_views_options($view, $display_id = NULL) {
   static $dom_counter = 0;
 
   if (!isset($display_id)) {
@@ -116,11 +116,11 @@ function jcarousel_views_add($view, $display_id = NULL) {
   // useful when displaying the same view multiple times with different
   // arguments (i.e. such as in a panel).
   $options['view_options'] = array(
-    'view_args' => check_plain(implode('/', $view->args)),
-    'view_path' => check_plain($_GET['q']),
-    'view_base_path' => $view->get_path(),
-    'view_display_id' => $display_id,
-    'view_name' => $view->name,
+    //'view_args' => check_plain(implode('/', $view->args)),
+    //'view_path' => check_plain($_GET['q']),
+    //'view_base_path' => $view->get_path(),
+    //'view_display_id' => $display_id,
+    //'view_name' => $view->name,
     'jcarousel_dom_id' => isset($view->jcarousel_dom_id) ? $view->jcarousel_dom_id : ++$dom_counter,
   );
 
@@ -129,29 +129,17 @@ function jcarousel_views_add($view, $display_id = NULL) {
       $options[$key] = is_numeric($option) ? (int) $option : $option;
     }
   }
-
-  // By default limit the scrolling to the same number of items as are visible
-  // to avoid display glitches.
-  if (empty($options['scroll']) && !empty($options['visible'])) {
-    $options['scroll'] = $options['visible'];
-  }
-
-  // By default limit the scrolling to the same number of items as are visible
-  // to avoid display glitches.
-  if (empty($options['scroll']) && !empty($options['visible'])) {
-    $options['scroll'] = $options['visible'];
-  }
-
   // Get the total number of items in this view.
-  $count_query = $view->build_info['count_query']->countQuery();
-  $count = $count_query->execute()->fetchField();
-
-  // Views may already populate total_rows later, but since we've already
-  // generated this value, we might as well make it available.
-  $view->total_rows = $count;
+  if ($view->build_info['count_query']) {
+    $count_query = $view->build_info['count_query']->countQuery();
+    $count = $count_query->execute()->fetchField();
+    // Views may already populate total_rows later, but since we've already
+    // generated this value, we might as well make it available.
+    $view->total_rows = $count;
+  }
 
   // If there is just one item disable the auto-scroll and rotation.
-  if ($count == 1) {
+  if ($view->total_rows == 1) {
     $options['wrap'] = NULL;
     $options['auto'] = 0;
   }
@@ -165,7 +153,7 @@ function jcarousel_views_add($view, $display_id = NULL) {
   // If using AJAX, adjust the view's positioning based on the current page.
   if ($use_ajax) {
     $options['ajax'] = TRUE;
-    $options['size'] = $count;
+    $options['size'] = $view->total_rows;
 
     // Views 2:
     if (isset($view->pager)) {
@@ -208,33 +196,29 @@ function jcarousel_views_add($view, $display_id = NULL) {
     }
   }
 
-  $identifier = drupal_clean_css_identifier('jcarousel_dom_' . $options['view_options']['jcarousel_dom_id']);
-  return jcarousel_add($identifier, $options);
+  return $options;
 }
 
 /**
- * Preprocess function for jcarousel-view.tpl.php.
+ * Preprocess function for views-view-jcarousel.tpl.php.
  */
-function template_preprocess_jcarousel_view(&$variables) {
+function template_preprocess_views_view_jcarousel(&$variables) {
   $view = $variables['view'];
   $display_id = empty($view->current_display) ? 'default' : $view->current_display;
 
   // Add necessary JavaScript and CSS.
-  $attachments = jcarousel_views_add($view, $display_id);
+  $options = jcarousel_views_options($view, $display_id);
 
-  // Find the JavaScript settings in the returned array.
-  foreach ($attachments['js'] as $data) {
-    if (isset($data['type']) && $data['type'] == 'setting') {
-      $settings = reset($data['data']['jcarousel']['carousels']);
-    }
-  }
+  // Add default classes.
+  $options += array(
+    'row_class' => 'jcarousel-item',
+    'item' => '.jcarousel-item',
+  );
 
-  // Build the list of classes for the carousel.
-  $options = $view->style_plugin->options;
   $variables['jcarousel_classes_array'] = array(
     'jcarousel',
     drupal_clean_css_identifier('jcarousel-view--' . $view->name . '--' . $display_id),
-    drupal_clean_css_identifier('jcarousel-dom-' . $settings['view_options']['jcarousel_dom_id']),
+    drupal_clean_css_identifier('jcarousel-dom-' . $options['view_options']['jcarousel_dom_id']),
   );
   if (!empty($options['skin'])) {
     $variables['jcarousel_classes_array'][] = 'jcarousel-skin-' . $options['skin'];
@@ -248,6 +232,9 @@ function template_preprocess_jcarousel_view(&$variables) {
   foreach ($variables['rows'] as $id => $row) {
     $number = $id + 1 + $pager_offset;
     $zebra = ($number % 2 == 0) ? 'even' : 'odd';
-    $variables['row_classes'][$id] = 'jcarousel-item jcarousel-item-' . $number . ' ' . $zebra;
+    $variables['row_classes'][$id] = "{$options['row_class']} {$options['row_class']}-{$number} {$zebra}";
   }
+
+  $data = array('jcarousel' => TRUE) + $options;
+  $variables['data_attributes'] = jcarousel_data_attributes($data);
 }
