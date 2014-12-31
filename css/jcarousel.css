@@ -1,0 +1,115 @@
+
+/**
+ * A simple sample carousel skin.
+ *
+ * This skin includes a sample arrows.svg file that may be edited with the free
+ * illustration application InkScape (http://inkscape.org).
+ *
+ * CSS and icons by Nathan Haug.
+ */
+
+.jcarousel-wrapper {
+  position: relative;
+  /*border: 10px solid #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 2px #999;
+  -moz-box-shadow: 0 0 2px #999;
+  box-shadow: 0 0 2px #999;*/
+}
+
+.jcarousel {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.jcarousel-wrapper .jcarousel > ul {
+  width: 20000em;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+/*.jcarousel-skin-default .jcarousel-container-horizontal {
+  width: 440px;
+  height: 102px;
+  padding: 20px 40px;
+  margin: auto;
+}
+
+.jcarousel-skin-default .jcarousel-container-vertical {
+  width: 102px;
+  height: 440px;
+  padding: 40px 20px;
+  margin: auto;
+}
+
+.jcarousel-skin-default .jcarousel-clip-horizontal {
+  width: 440px;
+  overflow: hidden;
+}
+
+.jcarousel-skin-default .jcarousel-clip-vertical {
+  height: 440px;
+  overflow: hidden;
+}
+*/
+.jcarousel-item {
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+.jcarousel-item img {
+  display: block;
+  max-width: 100%;
+  height: auto !important;
+}
+
+/**
+ * Carousel controls
+ */
+.jcarousel-next,
+.jcarousel-prev {
+  position: absolute;
+  top: 50%;
+  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+}
+.jcarousel-next {
+  right: 15px;
+}
+.jcarousel-prev {
+  left: 15px;
+}
+
+.jcarousel-next-disabled,
+.jcarousel-prev-disabled {
+  display: none;
+}
+
+/*
+.jcarousel-navigation {
+  margin: 0;
+  padding: 0;
+}
+
+.jcarousel-skin-default .jcarousel-navigation li {
+  display: inline;
+  margin: 0 2px 0 0;
+  padding: 0;
+  background: none;
+}
+
+.jcarousel-skin-default .jcarousel-navigation li.active a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+*/

@@ -26,6 +26,7 @@ class jcarousel_style_plugin extends views_plugin_style {
     $options['center'] = array('default' => FALSE);
     $options['navigation'] = array('default' => '');
     $options['ajax'] = array('default' => 0);
+    $options['responsive'] = array('default' => 1);
     return $options;
   }
 
@@ -67,6 +68,12 @@ class jcarousel_style_plugin extends views_plugin_style {
       '#default_value' => $this->options['skin'],
       '#options' => $skins,
       '#description' => t('Skins may be provided by other modules. Set to "None" if your theme includes carousel theming directly in style.css or another stylesheet. "None" does not include any built-in navigation, arrows, or positioning at all.'),
+    );
+    $form['responsive'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Responsive'),
+      '#default_value' => $this->options['responsive'],
+      '#description' => t('Should the carousel fill the available space and respond to page flow changes? Untick for a fixed-width carousel.'),
     );
     $form['visible'] = array(
       '#type' => 'select',

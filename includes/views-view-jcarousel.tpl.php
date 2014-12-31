@@ -6,8 +6,8 @@
  */
 ?>
 
- <div class="jcarousel-wrapper">
-  <div <?php print $data_attributes; ?> class="<?php print $jcarousel_classes; ?>">
+ <div class="jcarousel-wrapper <?php print $jcarousel_classes; ?>">
+  <div <?php print $data_attributes; ?> class="jcarousel">
     <ul>
       <?php foreach ($rows as $id => $row): ?>
         <li class="<?php print $row_classes[$id]; ?>"><?php print $row; ?></li>

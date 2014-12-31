@@ -129,6 +129,7 @@ function jcarousel_views_options($view, $display_id = NULL) {
       $options[$key] = is_numeric($option) ? (int) $option : $option;
     }
   }
+
   // Get the total number of items in this view.
   if ($view->build_info['count_query']) {
     $count_query = $view->build_info['count_query']->countQuery();
@@ -216,13 +217,19 @@ function template_preprocess_views_view_jcarousel(&$variables) {
   );
 
   $variables['jcarousel_classes_array'] = array(
-    'jcarousel',
     drupal_clean_css_identifier('jcarousel-view--' . $view->name . '--' . $display_id),
     drupal_clean_css_identifier('jcarousel-dom-' . $options['view_options']['jcarousel_dom_id']),
   );
-  if (!empty($options['skin'])) {
-    $variables['jcarousel_classes_array'][] = 'jcarousel-skin-' . $options['skin'];
+
+  // Load the appropriate skin.
+  $skins = jcarousel_skins();
+  if (empty($options['skin']) || !isset($skins[$options['skin']])) {
+    $options['skin'] = 'default';
   }
+  $options['skinfile'] = check_url(url($skins[$options['skin']]['file path'] . '/' . $skins[$options['skin']]['file']));
+  drupal_add_css($options['skinfile']);
+
+  $variables['jcarousel_classes_array'][] = 'jcarousel-skin-' . $options['skin'];
   $variables['jcarousel_classes'] = implode(' ', $variables['jcarousel_classes_array']);
 
   // Views 2/3 compatibility.

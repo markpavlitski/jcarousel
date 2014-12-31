@@ -41,11 +41,8 @@ function jcarousel_init() {
   $library = libraries_load('jcarousel');
   drupal_add_js(drupal_get_path('module', 'jcarousel') . '/js/jcarousel.js');
 
-  // @todo make this lazy-load.
-  // Load all skins.
-  foreach (jcarousel_skins() as $skin) {
-    drupal_add_css($skin['file path'] . '/' . $skin['file']);
-  }
+  // Load the default jCarousel stylesheet.
+  drupal_add_css(drupal_get_path('module', 'jcarousel') . '/css/jcarousel.css');
 }
 
 /**
@@ -202,7 +199,7 @@ function jcarousel_data_attributes($options, $format_attributes = TRUE) {
       if (is_bool($v)) {
         $v = $v ? 'true' : 'false';
       }
-      $data_attributes["data-{$k}"] = $v;
+      $data_attributes["data-{$k}"] = check_plain($v);
     }
   }
 
@@ -219,6 +216,8 @@ function jcarousel_filter_data_attributes($options) {
     'vertical' => TRUE,
     'rtl' => TRUE,
     'center' => TRUE,
+    'responsive' => TRUE,
+    'skinfile' => TRUE,
   );
   static $jcarousel_options = array(
     'jcarousel' => TRUE,

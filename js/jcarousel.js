@@ -23,23 +23,41 @@ Drupal.behaviors.jcarousel.attach = function(context, settings) {
       // @todo
     }
 
+    // Load the appropriate skin stylesheet.
+    if ($carousel.options.skinfile) {
+      // Check if the stylesheet has already been loaded.
+      if (!$("link[href='" + $carousel.options.skinfile + "']").length) {
+        // Create a new DOM element for the stylesheet.
+        $('<link href="' + $carousel.options.skinfile + '" rel="stylesheet">')
+          // Once the stylesheet has loaded, run the responsive callback, in
+          // case any elements have been resized.
+          .load(function() {Drupal.jcarousel.responsiveCallback($carousel);})
+          // Add into <head>.
+          .appendTo("head");
+      }
+    }
+
     // Add navigation to the carousel if enabled.
     if (!$carousel.options.setupCallback) {
       $carousel.on('jcarousel:createend', function(event, carousel) {
         Drupal.jcarousel.setupCarousel(carousel);
         if (carousel.options.navigation) {
-          Drupal.jcarousel.addNavigation(carousel, options.navigation);
+          Drupal.jcarousel.addNavigation(carousel, carousel.options.navigation);
         }
       });
-      if ($carousel.options.navigation && !options.itemVisibleInCallback) {
+      if ($carousel.options.navigation && !$carousel.options.itemVisibleInCallback) {
         // @todo
       }
     }
-    
+
+    // Add responsive callback to the carousel.
+    $carousel.on('jcarousel:reload jcarousel:create', function(event, carousel) {
+      Drupal.jcarousel.responsiveCallback($(this));
+    });
+
     $carousel.buttonNext = $carousel.siblings('.jcarousel-next:first');
     $carousel.buttonPrev = $carousel.siblings('.jcarousel-prev:first');
 
-    
     // Initialize the jcarousel.
     $carousel.addClass('jcarousel-processed').jcarousel($carousel.options);
     $carousel.buttonPrev.jcarouselControl({
@@ -127,13 +145,23 @@ Drupal.jcarousel.setupCarousel = function(carousel) {
   var itemCount = carousel.options.size ? carousel.options.size : $(carousel.list).children('li').length;
   carousel.pageCount =  Math.ceil(itemCount / carousel.pageSize);
   carousel.pageNumber = 1;
-  
+
   // Disable the previous/next arrows if there is only one page.
   if (carousel.options.wrap != 'circular' && carousel.pageCount == 1) {
     $(carousel.buttonNext).addClass('jcarousel-next-disabled').attr('disabled', true);
     $(carousel.buttonPrev).addClass('jcarousel-prev-disabled').attr('disabled', true);
   }
 };
+
+/**
+ * Callback for reponsive views.
+ */
+Drupal.jcarousel.responsiveCallback = function($carousel) {
+  if ($carousel.options.responsive) {
+    var width = $carousel.innerWidth();
+    $carousel.jcarousel('items').width(width);
+  }
+}
 
 /**
  * AJAX callback for all jCarousel-style views.
@@ -144,7 +172,8 @@ Drupal.jcarousel.ajaxResponseCallback = function(jcarousel, target, response) {
   }
 
   var $view = $(target);
-  var jcarousel = $view.find('ul.jcarousel').data('jcarousel');
+  // @todo this is incorrect:
+  jcarousel = jcarousel || $view.find('ul.jcarousel').data('jcarousel');
 
   // Add items to the jCarousel.
   $('ul.jcarousel > li', response.display).each(function(i) {
