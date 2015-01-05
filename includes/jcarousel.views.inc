@@ -33,7 +33,7 @@ function jcarousel_views_ajax() {
     $display_id = $_REQUEST['view_display_id'];
     $args = isset($_REQUEST['view_args']) && $_REQUEST['view_args'] !== '' ? explode('/', $_REQUEST['view_args']) : array();
     $path = isset($_REQUEST['view_path']) ? $_REQUEST['view_path'] : NULL;
-    $dom_id = isset($_REQUEST['jcarousel_dom_id']) ? intval($_REQUEST['jcarousel_dom_id']) : NULL;
+    $dom_id = isset($_REQUEST['jcarousel_dom_id']) ? $_REQUEST['jcarousel_dom_id'] : NULL;
     $first = isset($_REQUEST['first']) ? intval($_REQUEST['first']) : NULL;
     $last = isset($_REQUEST['last']) ? intval($_REQUEST['last']) : NULL;
     views_include('ajax');
@@ -121,7 +121,7 @@ function jcarousel_views_add($view, $display_id = NULL) {
     'view_base_path' => $view->get_path(),
     'view_display_id' => $display_id,
     'view_name' => $view->name,
-    'jcarousel_dom_id' => isset($view->jcarousel_dom_id) ? $view->jcarousel_dom_id : ++$dom_counter,
+    'jcarousel_dom_id' => isset($view->jcarousel_dom_id) ? $view->jcarousel_dom_id : $view->name . '_' . $display_id . '_' . ++$dom_counter,
   );
 
   foreach ($view->style_plugin->options as $key => $option) {
