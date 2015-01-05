@@ -39,8 +39,11 @@ class jcarousel_style_plugin extends views_plugin_style {
     $skins[''] = t('None');
 
     // Number of options to provide in count-based options.
-    $range = drupal_map_assoc(range(1, 10));
-    $auto_range = array('' => t('Auto')) + $range;
+    $start_range = range(-10, 10);
+    $range = drupal_map_assoc($start_range);
+    // Remove '0'.
+    unset($range[0]);
+    $auto_range = array('' => t('Auto')) + drupal_map_assoc(range(1, 10));
 
     $form['description'] = array(
       '#type' => 'markup',
@@ -134,7 +137,7 @@ class jcarousel_style_plugin extends views_plugin_style {
     $form['advanced']['start'] = array(
       '#type' => 'select',
       '#title' => t('Start position'),
-      '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set.'),
+      '#description' => t('The item that will be shown as the first item in the list upon loading. Useful for starting a list in the middle of a set. A negative value allows choosing an item in the end, e.g. -1 is the last item.'),
       '#options' => $range,
       '#default_value' => $this->options['start'],
     );
