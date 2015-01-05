@@ -284,7 +284,7 @@
                 var di = Math.ceil(this.clipping() / this.options.visible), wh = 0, lt = 0;
                 this.list.children('li').each(function(i) {
                     wh += self.dimension(this, di);
-                    if (i + 1 < self.first) {
+                    if (parseInt(jQuery(this).attr('jcarouselindex')) < self.first) {
                         lt = wh;
                     }
                 });
